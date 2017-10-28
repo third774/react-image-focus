@@ -8,71 +8,17 @@ interface FocalPickerProps {
 }
 
 export class FocalPicker extends Component<FocalPickerProps> {
-  canvas: HTMLCanvasElement | null
+  img: HTMLImageElement | null
+  container: HTMLDivElement | null
 
   state = {
-    height: 0,
-    width: 0,
     x: 0,
     y: 0,
     moving: false
   }
 
-  get ctx(): CanvasRenderingContext2D {
-    if (!this.canvas) {
-      throw new Error("No canvas")
-    }
-    const ctx = this.canvas.getContext("2d")
-    if (!ctx) {
-      throw new Error("No context")
-    }
-    return ctx
-  }
-
-  handleLoad = (e: any) => {
-    console.log(e.target)
-    const [height, width] = [e.target.naturalHeight, e.target.naturalWidth]
-    this.setState({ height, width })
-    if (this.canvas) {
-      this.canvas.height = height
-      this.canvas.width = width
-    }
-    this.ctx.drawImage(e.target, 0, 0, width, height)
-    this.initializeFocalPicker()
-  }
-
   componentDidMount() {
-    const img = new Image()
-    img.addEventListener("load", this.handleLoad)
-    img.src = this.props.src
-  }
-
-  startDrag = (e: any) => {
-    console.log(e.currentTarget)
-  }
-
-  handleDragStart = (e: any) => {
-    this.setState({ moving: true })
-  }
-
-  handleDragEnd = (e: any) => {
-    if (this.state.moving) {
-      const { onChange } = this.props
-      this.setState({ moving: false })
-      onChange && onChange(this.state.x, this.state.y)
-    }
-  }
-
-  handleMove = (e: any) => {
-    if (this.state.moving) {
-      const x = Math.round(e.clientX / this.state.width * 1000) / 1000
-      const y = Math.round(e.clientY / this.state.height * 1000) / 1000
-      if (x <= 1 && y <= 1) {
-        this.setState({ x, y })
-      } else {
-        this.handleDragEnd(e)
-      }
-    }
+    this.initializeFocalPicker()
   }
 
   initializeFocalPicker() {
@@ -89,19 +35,67 @@ export class FocalPicker extends Component<FocalPickerProps> {
     }
   }
 
+  handleDragStart = (e: any) => {
+    this.setState({ moving: true })
+    this.updateCoordinates(e)
+  }
+
+  handleDragEnd = () => {
+    if (this.state.moving) {
+      const { onChange } = this.props
+      this.setState({ moving: false })
+      onChange && onChange(this.state.x, this.state.y)
+    }
+  }
+
+  handleMove = (e: any) => {
+    if (this.state.moving && this.container) {
+      this.updateCoordinates(e)
+    }
+  }
+
+  updateCoordinates = (e: any) => {
+    if (this.container) {
+      const x =
+        Math.round(
+          (e.clientX - this.container.offsetLeft) /
+            this.container.scrollWidth *
+            1000
+        ) / 1000
+      const y =
+        Math.round(
+          (e.clientY - this.container.offsetTop) /
+            this.container.scrollHeight *
+            1000
+        ) / 1000
+      if (0 <= x && x <= 1 && 0 <= y && y <= 1) {
+        this.setState({ x, y })
+      } else {
+        this.setState({ moving: false })
+        this.handleDragEnd()
+      }
+    }
+  }
+
   render() {
-    const { height, width, x, y } = this.state
+    const { src } = this.props
+    const { x, y } = this.state
     return (
       <div
-        style={{ position: "relative", height, width, overflow: "hidden" }}
+        ref={el => (this.container = el)}
+        style={{ maxWidth: "100%", position: "relative", userSelect: "none" }}
+        onMouseUp={this.handleDragEnd}
         onMouseMove={this.handleMove}
+        onMouseDown={this.handleDragStart}
         onMouseLeave={this.handleDragEnd}
       >
-        <canvas style={{ maxWidth: "100%" }} ref={el => (this.canvas = el)} />
+        <img
+          style={{ maxWidth: "100%", display: "block" }}
+          draggable={false}
+          src={src}
+          ref={el => (this.img = el)}
+        />
         <svg
-          onMouseDown={this.handleDragStart}
-          onMouseUp={this.handleDragEnd}
-          onDrag={this.handleMove}
           style={{
             position: "absolute",
             left: `calc(${x * 100}% - 10px)`,
