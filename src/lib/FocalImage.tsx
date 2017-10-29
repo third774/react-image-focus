@@ -106,7 +106,6 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
       }
       return this.setState(updatedState)
     }
-    console.warn("NO IMG OR CONTAINER")
   }
 
   componentDidUpdate(prevProps: FocalImageProps) {
