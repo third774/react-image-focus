@@ -50,22 +50,10 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
     focus: number,
     shiftDimension: string,
   ) {
-    console.log("Calculate Shift")
-    console.log("shiftDimension: ", shiftDimension)
-    console.log("containerSize: ", containerSize)
-    console.log("imageSize: ", imageSize)
-    console.log("focus: ", focus)
-    console.log("dimensionRatio: ", dimensionRatio)
-
     // Distance from center to edge.
     const containerCenter = containerSize / 2
-    console.log("containerCenter: ", containerCenter)
-
     const scaledImage = imageSize / dimensionRatio
-    console.log("scaledImage: ", scaledImage)
-
     const scaledFocus = scaledImage * focus
-    console.log("scaledFocus: ", scaledFocus)
 
     // scaled focus is beyond the halfway point of the container at the far edge
     if (scaledFocus > scaledImage - containerCenter)
