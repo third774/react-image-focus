@@ -13,27 +13,9 @@ export class FocalPicker extends Component<FocalPickerProps> {
   container: HTMLDivElement | null
 
   state = {
-    x: 0,
-    y: 0,
+    x: this.props.x || 0.5,
+    y: this.props.y || 0.5,
     moving: false,
-  }
-
-  componentDidMount() {
-    this.initializeFocalPicker()
-  }
-
-  initializeFocalPicker() {
-    if (this.props.x !== undefined && this.props.y !== undefined) {
-      this.setState({
-        x: this.props.x,
-        y: this.props.y,
-      })
-    } else {
-      this.setState({
-        x: 0.5,
-        y: 0.5,
-      })
-    }
   }
 
   handleDragStart = (e: any) => {
