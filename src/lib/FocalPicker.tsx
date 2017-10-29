@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 
+const retina = require("./Retina.svg")
+
 interface FocalPickerProps {
   src: string
   x?: number
@@ -82,7 +84,12 @@ export class FocalPicker extends Component<FocalPickerProps> {
     return (
       <div
         ref={el => (this.container = el)}
-        style={{ maxWidth: "100%", position: "relative", userSelect: "none" }}
+        style={{
+          maxWidth: "100%",
+          position: "relative",
+          userSelect: "none",
+          overflow: "hidden",
+        }}
         onMouseUp={this.handleDragEnd}
         onMouseMove={this.handleMove}
         onMouseDown={this.handleDragStart}
@@ -93,19 +100,16 @@ export class FocalPicker extends Component<FocalPickerProps> {
           draggable={false}
           src={src}
         />
-        <svg
+        <img
+          src={retina}
           style={{
             position: "absolute",
             left: `calc(${x * 100}% - 10px)`,
             top: `calc(${y * 100}% - 10px)`,
             cursor: "move",
           }}
-          height="20"
-          width="20"
-          viewBox="0 0 200 200"
-        >
-          <circle cx="100" cy="100" r="100" fill="deeppink" />
-        </svg>
+          draggable={false}
+        />
       </div>
     )
   }
