@@ -1,14 +1,15 @@
 import * as React from "react"
 import "./App.css"
-import { FocalPicker } from "./FocalPicker"
-import { FocalImage } from "./FocalImage"
+import { FocalImage } from "./lib/FocalImage"
+import { PickerContainer } from "./PickerContainer"
 
-const IMG_SRC = "https://picsum.photos/1200/1000"
+const IMG_SRC = "https://picsum.photos/4000/3000?random"
 
 class App extends React.Component {
   state = {
-    x: 0,
-    y: 0
+    imgUrl: IMG_SRC,
+    x: 0.5,
+    y: 0.5,
   }
 
   handleChange = (x: number, y: number) => {
@@ -17,11 +18,37 @@ class App extends React.Component {
   }
 
   render() {
-    const { x, y } = this.state
+    const { x, y, imgUrl } = this.state
     return (
       <div className="App">
-        <FocalPicker src={IMG_SRC} onChange={this.handleChange} />
-        <FocalImage src={IMG_SRC} x={x} y={y} />
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <div className="container">
+          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        </div>
+        <PickerContainer src={imgUrl} onChange={this.handleChange} />
       </div>
     )
   }

@@ -8,13 +8,12 @@ interface FocalPickerProps {
 }
 
 export class FocalPicker extends Component<FocalPickerProps> {
-  img: HTMLImageElement | null
   container: HTMLDivElement | null
 
   state = {
     x: 0,
     y: 0,
-    moving: false
+    moving: false,
   }
 
   componentDidMount() {
@@ -25,12 +24,12 @@ export class FocalPicker extends Component<FocalPickerProps> {
     if (this.props.x !== undefined && this.props.y !== undefined) {
       this.setState({
         x: this.props.x,
-        y: this.props.y
+        y: this.props.y,
       })
     } else {
       this.setState({
         x: 0.5,
-        y: 0.5
+        y: 0.5,
       })
     }
   }
@@ -44,7 +43,9 @@ export class FocalPicker extends Component<FocalPickerProps> {
     if (this.state.moving) {
       const { onChange } = this.props
       this.setState({ moving: false })
-      onChange && onChange(this.state.x, this.state.y)
+      if (onChange) {
+        onChange(this.state.x, this.state.y)
+      }
     }
   }
 
@@ -58,18 +59,19 @@ export class FocalPicker extends Component<FocalPickerProps> {
     if (this.container) {
       const x =
         Math.round(
-          (e.clientX - this.container.offsetLeft) /
+          (e.clientX - this.container.getBoundingClientRect().left) /
             this.container.scrollWidth *
-            1000
+            1000,
         ) / 1000
       const y =
         Math.round(
-          (e.clientY - this.container.offsetTop) /
+          (e.clientY - this.container.getBoundingClientRect().top) /
             this.container.scrollHeight *
-            1000
+            1000,
         ) / 1000
       if (0 <= x && x <= 1 && 0 <= y && y <= 1) {
         this.setState({ x, y })
+        this.props.onChange && this.props.onChange(x, y)
       } else {
         this.setState({ moving: false })
         this.handleDragEnd()
@@ -93,14 +95,13 @@ export class FocalPicker extends Component<FocalPickerProps> {
           style={{ maxWidth: "100%", display: "block" }}
           draggable={false}
           src={src}
-          ref={el => (this.img = el)}
         />
         <svg
           style={{
             position: "absolute",
             left: `calc(${x * 100}% - 10px)`,
             top: `calc(${y * 100}% - 10px)`,
-            cursor: "move"
+            cursor: "move",
           }}
           height="20"
           width="20"
