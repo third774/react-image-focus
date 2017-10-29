@@ -51,6 +51,9 @@ export const PickerContainer: StatelessComponent<PickerContainerProps> = ({
     <Instruction>Change URL to update image:</Instruction>
     <SrcInput value={src} onChange={handleChange(onImgSrcChange)} />
     <Instruction>Focal Coordinates:</Instruction>
-    <SrcInput value={`{ x: ${x.toFixed(3)}, y: ${y.toFixed(3)} }`} />
+    <SrcInput
+      value={`{ x: ${x.toFixed(3)}, y: ${y.toFixed(3)} }`}
+      readOnly={true}
+    />
   </Container>
 )
