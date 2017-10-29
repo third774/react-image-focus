@@ -26,6 +26,8 @@ const SrcInput = styled.input`
 `
 
 interface PickerContainerProps {
+  x: number
+  y: number
   src: string
   onChange: (x: number, y: number) => void
   onImgSrcChange: (url: string) => void
@@ -37,14 +39,18 @@ const handleChange = (onImgSrcChange: (url: string) => void) => (e: any) => {
 }
 
 export const PickerContainer: StatelessComponent<PickerContainerProps> = ({
+  x,
+  y,
   src,
   onChange,
   onImgSrcChange,
 }) => (
   <Container>
     <Instruction>Drag to select focus</Instruction>
-    <FocalPicker src={src} onChange={onChange} />
+    <FocalPicker src={src} x={x} y={y} onChange={onChange} />
     <Instruction>Change URL to update image:</Instruction>
     <SrcInput value={src} onChange={handleChange(onImgSrcChange)} />
+    <Instruction>Focal Coordinates:</Instruction>
+    <SrcInput value={`{ x: ${x.toFixed(3)}, y: ${y.toFixed(3)} }`} />
   </Container>
 )
