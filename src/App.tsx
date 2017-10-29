@@ -3,7 +3,7 @@ import "./App.css"
 import { FocalImage } from "./lib/FocalImage"
 import { PickerContainer } from "./PickerContainer"
 
-const IMG_SRC = "https://picsum.photos/4000/3000?random"
+const IMG_SRC = "https://picsum.photos/2000/5000?random"
 
 class App extends React.Component {
   state = {
@@ -13,7 +13,6 @@ class App extends React.Component {
   }
 
   handleChange = (x: number, y: number) => {
-    console.log(`x: ${x} | y: ${y}`)
     this.setState({ x, y })
   }
 
