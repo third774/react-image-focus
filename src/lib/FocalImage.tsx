@@ -21,9 +21,7 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
 
   state = {
     style: {
-      display: "none",
-      maxWidth: "100%",
-      maxHeight: "100%",
+      display: "none", // do not display image until it is loaded
     },
   }
 
@@ -50,7 +48,6 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
     focus: number,
     shiftDimension: string,
   ) {
-    // Distance from center to edge.
     const containerCenter = containerSize / 2
     const scaledImage = imageSize / dimensionRatio
     const scaledFocus = scaledImage * focus
@@ -138,22 +135,6 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
           onLoad={this.updateImageStyles}
           alt={alt}
         />
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            color: "magenta",
-            pointerEvents: "none",
-          }}
-        >
-          +
-        </div>
       </div>
     )
   }

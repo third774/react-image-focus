@@ -3,7 +3,7 @@ import "./App.css"
 import { FocalImage } from "./lib/FocalImage"
 import { PickerContainer } from "./PickerContainer"
 
-const IMG_SRC = "https://picsum.photos/2000/5000?random"
+const IMG_SRC = "https://picsum.photos/4000/2400"
 
 class App extends React.Component {
   state = {
@@ -14,6 +14,10 @@ class App extends React.Component {
 
   handleChange = (x: number, y: number) => {
     this.setState({ x, y })
+  }
+
+  handleImgSrcChange = (imgUrl: string) => {
+    this.setState({ imgUrl })
   }
 
   render() {
@@ -47,7 +51,11 @@ class App extends React.Component {
         <div className="container">
           <FocalImage src={imgUrl} focalPoint={{ x, y }} />
         </div>
-        <PickerContainer src={imgUrl} onChange={this.handleChange} />
+        <PickerContainer
+          src={imgUrl}
+          onChange={this.handleChange}
+          onImgSrcChange={this.handleImgSrcChange}
+        />
       </div>
     )
   }
