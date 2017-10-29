@@ -57,17 +57,14 @@ export class FocalPicker extends Component<FocalPickerProps> {
 
   updateCoordinates = (e: any) => {
     if (this.container) {
+      const containerRect = this.container.getBoundingClientRect()
       const x =
         Math.round(
-          (e.clientX - this.container.getBoundingClientRect().left) /
-            this.container.scrollWidth *
-            1000,
+          (e.clientX - containerRect.left) / containerRect.width * 1000,
         ) / 1000
       const y =
         Math.round(
-          (e.clientY - this.container.getBoundingClientRect().top) /
-            this.container.scrollHeight *
-            1000,
+          (e.clientY - containerRect.top) / containerRect.height * 1000,
         ) / 1000
       if (0 <= x && x <= 1 && 0 <= y && y <= 1) {
         this.setState({ x, y })
