@@ -14,9 +14,11 @@ export function calculateShift(
     return (scaledImage - containerSize) * -1
   }
 
+  // similarly, focus is too close to inner edge, just return 0 for no shift
   if (scaledFocus < containerCenter) {
     return 0
   }
 
+  // subtract containerCenter from scaled focus to center image on focal point
   return (scaledFocus - containerCenter) * -1
 }

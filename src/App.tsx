@@ -3,7 +3,7 @@ import "./App.css"
 import { FocalImage } from "./lib/FocalImage"
 import { PickerContainer } from "./PickerContainer"
 
-const DEFAULT_IMG_URL = "https://picsum.photos/2300/1500"
+const DEFAULT_IMG_URL = "https://picsum.photos/2300/1700"
 
 class App extends React.Component {
   state = {

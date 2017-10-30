@@ -12,10 +12,6 @@ interface FocalImageProps {
   focalPoint: FocalPoint
 }
 
-interface FocalPointState {
-  style: any
-}
-
 const DEFAULT_IMAGE_STYLES = {
   position: "absolute",
   left: 0,
@@ -25,48 +21,41 @@ const DEFAULT_IMAGE_STYLES = {
   transition: "all 0.5s ease-in-out",
 }
 
-export class FocalImage extends Component<FocalImageProps, FocalPointState> {
+const CONTAINER_STYLES: any = {
+  position: "relative",
+  height: "100%",
+  width: "100%",
+  overflow: "hidden",
+}
+
+export class FocalImage extends Component<FocalImageProps> {
   img: HTMLImageElement | null
   container: HTMLDivElement | null
 
-  state = {
-    style: {
-      display: "none", // do not display image until it is loaded
-    },
-  }
-
-  containerStyles: any = {
-    position: "relative",
-    height: "100%",
-    width: "100%",
-    overflow: "hidden",
-  }
-
-  componentDidUpdate(prevProps: FocalImageProps) {
-    if (
-      this.props.focalPoint.x !== prevProps.focalPoint.x ||
-      this.props.focalPoint.y !== prevProps.focalPoint.y
-    ) {
-      this.updateImageStyles()
-    }
-  }
-
   componentDidMount() {
-    window.addEventListener("resize", this.updateImageStyles)
+    this.reRender()
+    window.addEventListener("resize", this.reRender)
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.updateImageStyles)
+    window.removeEventListener("resize", this.reRender)
   }
 
-  updateImageStyles = () => {
+  reRender = () => {
+    this.forceUpdate()
+  }
+
+  getImageStyles() {
     if (this.img && this.container) {
       const { focalPoint } = this.props
-
       const imageHeight = this.img.naturalHeight
       const imageWidth = this.img.naturalWidth
       const containerHeight = this.container.getBoundingClientRect().height
       const containerWidth = this.container.getBoundingClientRect().width
+
+      if (!imageHeight || !imageWidth || !containerHeight || !containerWidth) {
+        return { display: "none" }
+      }
 
       const style: any = {
         ...DEFAULT_IMAGE_STYLES,
@@ -92,21 +81,20 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
           focalPoint.y,
         )
       }
-      return this.setState({ style })
+      return style
     }
   }
 
   render() {
-    const { style } = this.state
     const { src, alt } = this.props
     return (
-      <div ref={el => (this.container = el)} style={this.containerStyles}>
+      <div ref={el => (this.container = el)} style={CONTAINER_STYLES}>
         <img
           ref={el => (this.img = el)}
-          style={style}
+          style={this.getImageStyles()}
           src={src}
-          onLoad={this.updateImageStyles}
           alt={alt}
+          onLoad={this.reRender}
         />
       </div>
     )
