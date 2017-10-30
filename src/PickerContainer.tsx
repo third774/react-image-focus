@@ -13,7 +13,7 @@ const Container = styled.div`
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.8);
 `
 
-const Instruction = styled.p`margin: 5px 0;`
+const Instruction = styled.p`margin: 10px 0 5px 0;`
 
 const SrcInput = styled.input`
   width: 100%;

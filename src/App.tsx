@@ -3,7 +3,7 @@ import "./App.css"
 import { FocalImage } from "./lib/FocalImage"
 import { PickerContainer } from "./PickerContainer"
 
-const DEFAULT_IMG_URL = "https://picsum.photos/3800/2300"
+const DEFAULT_IMG_URL = "https://picsum.photos/2300/1500"
 
 class App extends React.Component {
   state = {
@@ -24,33 +24,15 @@ class App extends React.Component {
     const { x, y, imgUrl } = this.state
     return (
       <div className="App">
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
-        <div className="container">
-          <FocalImage src={imgUrl} focalPoint={{ x, y }} />
-        </div>
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
+        <FocalImage src={imgUrl} focalPoint={{ x, y }} />
         <PickerContainer
           x={x}
           y={y}

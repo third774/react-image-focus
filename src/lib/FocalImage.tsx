@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import { calculateShift } from "./calculateShift"
 
 interface FocalPoint {
   x: number
@@ -13,6 +14,15 @@ interface FocalImageProps {
 
 interface FocalPointState {
   style: any
+}
+
+const DEFAULT_IMAGE_STYLES = {
+  position: "absolute",
+  left: 0,
+  top: 0,
+  minHeight: "100%",
+  minWidth: "100%",
+  transition: "all 0.5s ease-in-out",
 }
 
 export class FocalImage extends Component<FocalImageProps, FocalPointState> {
@@ -32,82 +42,6 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
     overflow: "hidden",
   }
 
-  defaultImageStyles = {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    minHeight: "100%",
-    minWidth: "100%",
-    transition: "all 0.5s ease-in-out",
-  }
-
-  calculateShift(
-    dimensionRatio: number,
-    containerSize: number,
-    imageSize: number,
-    focus: number,
-    shiftDimension: string,
-  ) {
-    const containerCenter = containerSize / 2
-    const scaledImage = imageSize / dimensionRatio
-    const scaledFocus = scaledImage * focus
-
-    // scaled focus is beyond the halfway point of the container at the far edge
-    if (scaledFocus > scaledImage - containerCenter) {
-      // return the far edge
-      return (scaledImage - containerSize) * -1
-    }
-
-    if (scaledFocus < containerCenter) {
-      return 0
-    }
-
-    return (scaledFocus - containerCenter) * -1
-  }
-
-  updateImageStyles = () => {
-    if (this.img && this.container) {
-      const { focalPoint } = this.props
-
-      const imageHeight = this.img.naturalHeight
-      const imageWidth = this.img.naturalWidth
-      const containerHeight = this.container.getBoundingClientRect().height
-      const containerWidth = this.container.getBoundingClientRect().width
-
-      const style: any = {
-        ...this.defaultImageStyles,
-      }
-
-      const widthRatio = imageWidth / containerWidth
-      const heightRatio = imageHeight / containerHeight
-
-      if (widthRatio > heightRatio) {
-        style.maxHeight = "100%"
-        style.left = this.calculateShift(
-          heightRatio,
-          containerWidth,
-          imageWidth,
-          focalPoint.x,
-          "width",
-        )
-      } else {
-        style.maxWidth = "100%"
-        style.top = this.calculateShift(
-          widthRatio,
-          containerHeight,
-          imageHeight,
-          focalPoint.y,
-          "height",
-        )
-      }
-
-      const updatedState = {
-        style,
-      }
-      return this.setState(updatedState)
-    }
-  }
-
   componentDidUpdate(prevProps: FocalImageProps) {
     if (
       this.props.focalPoint.x !== prevProps.focalPoint.x ||
@@ -123,6 +57,43 @@ export class FocalImage extends Component<FocalImageProps, FocalPointState> {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateImageStyles)
+  }
+
+  updateImageStyles = () => {
+    if (this.img && this.container) {
+      const { focalPoint } = this.props
+
+      const imageHeight = this.img.naturalHeight
+      const imageWidth = this.img.naturalWidth
+      const containerHeight = this.container.getBoundingClientRect().height
+      const containerWidth = this.container.getBoundingClientRect().width
+
+      const style: any = {
+        ...DEFAULT_IMAGE_STYLES,
+      }
+
+      const widthRatio = imageWidth / containerWidth
+      const heightRatio = imageHeight / containerHeight
+
+      if (widthRatio > heightRatio) {
+        style.maxHeight = "100%"
+        style.left = calculateShift(
+          heightRatio,
+          containerWidth,
+          imageWidth,
+          focalPoint.x,
+        )
+      } else {
+        style.maxWidth = "100%"
+        style.top = calculateShift(
+          widthRatio,
+          containerHeight,
+          imageHeight,
+          focalPoint.y,
+        )
+      }
+      return this.setState({ style })
+    }
   }
 
   render() {
