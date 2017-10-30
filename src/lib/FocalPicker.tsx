@@ -78,7 +78,7 @@ export class FocalPicker extends Component<FocalPickerProps> {
         onMouseLeave={this.handleDragEnd}
       >
         <img
-          style={{ maxWidth: "100%", display: "block" }}
+          style={{ width: "100%", display: "block" }}
           draggable={false}
           src={src}
         />
